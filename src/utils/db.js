@@ -1,7 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+// Hardcoded Supabase credentials (Safe for public client-side use in static apps)
+const supabaseUrl = 'https://qvhrwpjsrennhvzajthp.supabase.co';
+const supabaseAnonKey = 'sb_publishable_E8BSSjCJme5or7-sw8Sp5Q_jkBflLm1';
 
 export let supabase = null;
 
@@ -12,7 +13,7 @@ if (supabaseUrl && supabaseAnonKey) {
     console.error('Failed to initialize Supabase client:', err);
   }
 } else {
-  console.warn('Supabase credentials are missing! Check VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY env variables.');
+  console.warn('Supabase credentials are missing!');
 }
 
 export const getOrders = async () => {
