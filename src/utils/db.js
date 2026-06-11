@@ -1,96 +1,58 @@
-const DB_NAME = 'SadungThongDB';
-const DB_VERSION = 2;
-const STORE_NAME = 'orders';
+import { createClient } from '@supabase/supabase-js';
 
-export const initDB = () => {
-  return new Promise((resolve, reject) => {
-    const request = indexedDB.open(DB_NAME, DB_VERSION);
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-    request.onupgradeneeded = (e) => {
-      const db = e.target.result;
-      if (!db.objectStoreNames.contains(STORE_NAME)) {
-        db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
-      }
-    };
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-    request.onsuccess = (e) => {
-      resolve(e.target.result);
-    };
-
-    request.onerror = (e) => {
-      reject(e.target.error);
-    };
-  });
+export const getOrders = async () => {
+  const { data, error } = await supabase
+    .from('orders')
+    .select('*')
+    .order('id', { ascending: false });
+  
+  if (error) {
+    console.error('Error fetching orders from Supabase:', error);
+    throw error;
+  }
+  return data || [];
 };
 
-export const getOrders = () => {
-  return initDB().then((db) => {
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction(STORE_NAME, 'readonly');
-      const store = transaction.objectStore(STORE_NAME);
-      const request = store.getAll();
-
-      request.onsuccess = () => {
-        resolve(request.result);
-      };
-
-      request.onerror = () => {
-        reject(request.error);
-      };
-    });
-  });
+export const addOrder = async (order) => {
+  const { data, error } = await supabase
+    .from('orders')
+    .insert([order])
+    .select();
+  
+  if (error) {
+    console.error('Error adding order to Supabase:', error);
+    throw error;
+  }
+  return data[0]?.id;
 };
 
-export const addOrder = (order) => {
-  return initDB().then((db) => {
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction(STORE_NAME, 'readwrite');
-      const store = transaction.objectStore(STORE_NAME);
-      const request = store.add(order);
-
-      request.onsuccess = () => {
-        resolve(request.result);
-      };
-
-      request.onerror = () => {
-        reject(request.error);
-      };
-    });
-  });
+export const updateOrder = async (order) => {
+  const { data, error } = await supabase
+    .from('orders')
+    .update(order)
+    .eq('id', order.id)
+    .select();
+  
+  if (error) {
+    console.error('Error updating order on Supabase:', error);
+    throw error;
+  }
+  return data[0]?.id;
 };
 
-export const updateOrder = (order) => {
-  return initDB().then((db) => {
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction(STORE_NAME, 'readwrite');
-      const store = transaction.objectStore(STORE_NAME);
-      const request = store.put(order);
-
-      request.onsuccess = () => {
-        resolve(request.result);
-      };
-
-      request.onerror = () => {
-        reject(request.error);
-      };
-    });
-  });
-};
-
-export const deleteOrder = (id) => {
-  return initDB().then((db) => {
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction(STORE_NAME, 'readwrite');
-      const store = transaction.objectStore(STORE_NAME);
-      const request = store.delete(id);
-
-      request.onsuccess = () => {
-        resolve();
-      };
-
-      request.onerror = () => {
-        reject(request.error);
-      };
-    });
-  });
+export const deleteOrder = async (id) => {
+  const { error } = await supabase
+    .from('orders')
+    .delete()
+    .eq('id', id);
+  
+  if (error) {
+    console.error('Error deleting order from Supabase:', error);
+    throw error;
+  }
 };
