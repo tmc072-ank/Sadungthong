@@ -1,11 +1,25 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export let supabase = null;
+
+if (supabaseUrl && supabaseAnonKey) {
+  try {
+    supabase = createClient(supabaseUrl, supabaseAnonKey);
+  } catch (err) {
+    console.error('Failed to initialize Supabase client:', err);
+  }
+} else {
+  console.warn('Supabase credentials are missing! Check VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY env variables.');
+}
 
 export const getOrders = async () => {
+  if (!supabase) {
+    console.error('Supabase is not initialized. Using empty array.');
+    return [];
+  }
   const { data, error } = await supabase
     .from('orders')
     .select('*')
@@ -19,6 +33,10 @@ export const getOrders = async () => {
 };
 
 export const addOrder = async (order) => {
+  if (!supabase) {
+    console.error('Supabase is not initialized. Cannot add order.');
+    return null;
+  }
   const { data, error } = await supabase
     .from('orders')
     .insert([order])
@@ -32,6 +50,10 @@ export const addOrder = async (order) => {
 };
 
 export const updateOrder = async (order) => {
+  if (!supabase) {
+    console.error('Supabase is not initialized. Cannot update order.');
+    return null;
+  }
   const { data, error } = await supabase
     .from('orders')
     .update(order)
@@ -46,6 +68,10 @@ export const updateOrder = async (order) => {
 };
 
 export const deleteOrder = async (id) => {
+  if (!supabase) {
+    console.error('Supabase is not initialized. Cannot delete order.');
+    return;
+  }
   const { error } = await supabase
     .from('orders')
     .delete()
