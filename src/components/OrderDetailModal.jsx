@@ -50,7 +50,7 @@ export default function OrderDetailModal({ order, onClose }) {
         {/* Print Only Header */}
         <div className="print-header">
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-            <img src="/logo.jpg" alt="สดึงทอง" style={{ height: '70px', width: 'auto', borderRadius: '8px' }} />
+            <img src={`${import.meta.env.BASE_URL}logo.jpg`} alt="สดึงทอง" style={{ height: '70px', width: 'auto', borderRadius: '8px' }} />
             <div>
               <h2 style={{ fontSize: '20pt', fontWeight: 'bold', color: '#ea580c' }}>ร้าน สดึงทอง</h2>
               <p style={{ fontSize: '10pt', color: '#475569' }}>งานปักทุกประเภท - TEL 086 017 4068</p>

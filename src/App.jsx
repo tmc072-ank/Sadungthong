@@ -90,7 +90,7 @@ export default function App() {
       {/* App Header */}
       <header className="app-header">
         <div className="header-logo-section">
-          <img src="/logo.jpg" alt="สดึงทองโลโก้" className="header-logo" />
+          <img src={`${import.meta.env.BASE_URL}logo.jpg`} alt="สดึงทองโลโก้" className="header-logo" />
           <div className="header-title-section">
             <h1>สดึงทอง</h1>
             <p>ระบบจัดการและติดตามออเดอร์สั่งตัดเสื้อวินมอเตอร์ไซค์</p>

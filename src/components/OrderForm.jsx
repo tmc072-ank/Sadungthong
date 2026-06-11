@@ -294,7 +294,7 @@ export default function OrderForm({ onSave, initialOrder = null }) {
                 <div className="shirt-preview-image-wrapper">
                   <p>ด้านหน้า</p>
                   <img 
-                    src={`/shirt${selectedType}-front.jpg`} 
+                    src={`${import.meta.env.BASE_URL}shirt${selectedType}-front.jpg`} 
                     alt="เสื้อด้านหน้า" 
                     className="shirt-preview-img"
                     onError={(e) => { e.target.src = 'https://placehold.co/150x200?text=Front'; }}
@@ -303,7 +303,7 @@ export default function OrderForm({ onSave, initialOrder = null }) {
                 <div className="shirt-preview-image-wrapper">
                   <p>ด้านหลัง</p>
                   <img 
-                    src={`/shirt${selectedType === 2 ? '2-front' : `${selectedType}-back`}.jpg`} 
+                    src={`${import.meta.env.BASE_URL}shirt${selectedType === 2 ? '2-front' : `${selectedType}-back`}.jpg`} 
                     alt="เสื้อด้านหลัง" 
                     className="shirt-preview-img"
                     onError={(e) => { e.target.src = 'https://placehold.co/150x200?text=Back'; }}
@@ -721,7 +721,7 @@ export default function OrderForm({ onSave, initialOrder = null }) {
                 <div style={{ textAlign: 'center' }}>
                   <span style={{ fontSize: '0.75rem', color: '#64748b' }}>หน้า</span>
                   <img 
-                    src={`/shirt${t.id}-front.jpg`} 
+                    src={`${import.meta.env.BASE_URL}shirt${t.id}-front.jpg`} 
                     alt={`${t.name} หน้า`} 
                     style={{ width: '100%', height: 'auto', border: '1px solid #e2e8f0', borderRadius: '4px', background: '#fff' }} 
                   />
@@ -729,7 +729,7 @@ export default function OrderForm({ onSave, initialOrder = null }) {
                 <div style={{ textAlign: 'center' }}>
                   <span style={{ fontSize: '0.75rem', color: '#64748b' }}>หลัง</span>
                   <img 
-                    src={`/shirt${t.id === 2 ? '2-front' : `${t.id}-back`}.jpg`} 
+                    src={`${import.meta.env.BASE_URL}shirt${t.id === 2 ? '2-front' : `${t.id}-back`}.jpg`} 
                     alt={`${t.name} หลัง`} 
                     style={{ width: '100%', height: 'auto', border: '1px solid #e2e8f0', borderRadius: '4px', background: '#fff' }} 
                   />
